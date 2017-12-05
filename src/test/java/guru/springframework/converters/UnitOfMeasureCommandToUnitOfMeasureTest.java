@@ -1,6 +1,6 @@
 package guru.springframework.converters;
 
-import guru.springframework.commands.UnitofMeasureCommand;
+import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.domain.UnitOfMeasure;
 import org.junit.Before;
 import org.junit.Test;
@@ -27,13 +27,13 @@ public class UnitOfMeasureCommandToUnitOfMeasureTest {
 
     @Test
     public void testEmptyObject() throws Exception {
-        assertNotNull(unitOfMeasureCommandToUnitOfMeasure.convert(new UnitofMeasureCommand()));
+        assertNotNull(unitOfMeasureCommandToUnitOfMeasure.convert(new UnitOfMeasureCommand()));
     }
 
     @Test
     public void convert() throws Exception {
         //given
-        UnitofMeasureCommand command = new UnitofMeasureCommand();
+        UnitOfMeasureCommand command = new UnitOfMeasureCommand();
         command.setId(LONG_VALUE);
         command.setDescription(DESCRIPTION);
 

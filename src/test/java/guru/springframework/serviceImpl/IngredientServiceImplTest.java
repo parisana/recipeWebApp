@@ -51,7 +51,7 @@ public class IngredientServiceImplTest {
     }
 
     @Test
-    @Transactional
+//    @Transactional
     public void findByRecipeIdAndIngredientId() {
 
         Recipe recipe= new Recipe();
@@ -78,4 +78,34 @@ public class IngredientServiceImplTest {
 
         verify(recipeRepository, times(1)).findById(any());
     }
+
+    @Test
+    public void saveIngredientCommandTest(){
+        Long ingredientId= 2l;
+        Long recipeId=2l;
+
+        //given
+        IngredientCommand ingredientCommand= new IngredientCommand();
+        ingredientCommand.setId(ingredientId);
+        ingredientCommand.setRecipeId(recipeId);
+
+        Optional<Recipe> recipeOptional= Optional.of(new Recipe());
+
+        Recipe recipe= new Recipe();
+        recipe.setId(recipeId);
+        recipe.addIngredient(new Ingredient());
+        recipe.getIngredients().iterator().next().setId(ingredientId);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.save(any())).thenReturn(recipe);
+
+        //when
+        IngredientCommand savedIngredientCommand = ingredientService.saveIngredientCommand(ingredientCommand);
+
+        //then
+        assertEquals(recipeId, savedIngredientCommand.getId());
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).save(any());
+    }
+
 }

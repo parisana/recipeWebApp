@@ -11,6 +11,7 @@ import guru.springframework.services.IngredientService;
 import guru.springframework.services.UnitOfMeasureService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -57,18 +58,21 @@ public class IngredientServiceImpl implements IngredientService{
         return ingredientCommandOptional.get();
     }
 
+    @Transactional
     @Override
     public IngredientCommand saveIngredientCommand(IngredientCommand ingredientCommand) {
+        log.debug("*** Saving/Updating ingredient ***");
         Optional<Recipe> recipeOptional = recipeRepository.findById(ingredientCommand.getRecipeId());
 
-        if (recipeOptional.isPresent()){
+        if (!recipeOptional.isPresent()){
+            //todo error handling
             //If recipe id is not found then return empty object, don't save
             log.debug("***Recipe not found! Id : "+ ingredientCommand.getRecipeId()+" ****");
 
             return new IngredientCommand();
         }
         else {
-            //add or update
+            //add or update? determine!
             Recipe recipe = recipeOptional.get();
             Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
                     .filter(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))
@@ -81,7 +85,7 @@ public class IngredientServiceImpl implements IngredientService{
                 ingredientFound.setAmount(ingredientCommand.getAmount());
                 ingredientFound.setDescription(ingredientCommand.getDescription());
                 ingredientFound.setUom(unitOfMeasureRepository.findById(ingredientCommand.getUom().getId())
-                .orElseThrow(() -> new RuntimeException("**UOM NOT FOUND**"))); //todo address this
+                .orElseThrow(() -> new RuntimeException("**UOM NOT FOUND**"))); //todo replace this with a more robust implementation
             }else {
                 //add new ingredient
                 recipe.addIngredient(ingredientCommandToIngredient.convert(ingredientCommand));
@@ -89,11 +93,25 @@ public class IngredientServiceImpl implements IngredientService{
 
             //now save the recipe
             Recipe savedRecipe= recipeRepository.save(recipe);
-            //todo check for fail
 
-            return savedRecipe.getIngredients().stream()
+            //for update ingredientCommand will have an id but not for a new one so do a fail safe check for the case
+            Optional<Ingredient> savedIngredientOptional= savedRecipe.getIngredients().stream()
                     .filter(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))
-                    .map(ingredient -> ingredientToIngredientCommand.convert(ingredient)).findFirst().get();
+                    .findFirst();
+            if (!savedIngredientOptional.isPresent()){
+                //Fail safe: if not found then search by description and other properties
+                savedIngredientOptional= savedRecipe.getIngredients().stream()
+                        .filter(ingredient -> ingredient.getDescription().equals(ingredientCommand.getDescription()))
+                        .filter(ingredient -> ingredient.getAmount().equals(ingredientCommand.getAmount()))
+                        .filter(ingredient -> ingredient.getUom().getId().equals(ingredientCommand.getUom().getId()))
+                        .findFirst();
+            }
+            return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+
+
+//            return savedRecipe.getIngredients().stream()
+//                    .filter(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))
+//                    .map(ingredientToIngredientCommand::convert).findFirst().get();
         }
     }
 }

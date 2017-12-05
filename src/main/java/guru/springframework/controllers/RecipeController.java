@@ -40,7 +40,7 @@ public class RecipeController {
 
         model.addAttribute("recipe", new RecipeCommand());
 
-        return "recipe-form";
+        return "recipe/recipe-form";
     }
 
     @PostMapping
@@ -57,7 +57,7 @@ public class RecipeController {
     public String updateRecipe(@PathVariable String id, Model model){
         log.debug("***getting update/edit page***");
         model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
-        return "recipe-form";
+        return "recipe/recipe-form";
     }
 
     @GetMapping

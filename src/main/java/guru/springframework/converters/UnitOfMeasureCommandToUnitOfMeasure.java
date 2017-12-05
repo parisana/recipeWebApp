@@ -1,6 +1,6 @@
 package guru.springframework.converters;
 
-import guru.springframework.commands.UnitofMeasureCommand;
+import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.domain.UnitOfMeasure;
 import lombok.Synchronized;
 import org.springframework.core.convert.converter.Converter;
@@ -11,11 +11,11 @@ import org.springframework.stereotype.Component;
  * Created by Parisana on 4/12/17
  */
 @Component
-public class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitofMeasureCommand, UnitOfMeasure>{
+public class UnitOfMeasureCommandToUnitOfMeasure implements Converter<UnitOfMeasureCommand, UnitOfMeasure>{
     @Override
     @Nullable
     @Synchronized
-    public UnitOfMeasure convert(UnitofMeasureCommand source) {
+    public UnitOfMeasure convert(UnitOfMeasureCommand source) {
         if (source==null) return null;
 
         final UnitOfMeasure unitOfMeasure= new UnitOfMeasure();

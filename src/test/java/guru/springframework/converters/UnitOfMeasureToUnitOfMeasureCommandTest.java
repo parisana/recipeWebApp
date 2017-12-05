@@ -1,6 +1,6 @@
 package guru.springframework.converters;
 
-import guru.springframework.commands.UnitofMeasureCommand;
+import guru.springframework.commands.UnitOfMeasureCommand;
 import guru.springframework.domain.UnitOfMeasure;
 import org.junit.Before;
 import org.junit.Test;
@@ -41,7 +41,7 @@ public class UnitOfMeasureToUnitOfMeasureCommandTest {
         uom.setId(LONG_VALUE);
         uom.setDescription(DESCRIPTION);
         //when
-        UnitofMeasureCommand uomc = unitOfMeasureToUnitOfMeasureCommand.convert(uom);
+        UnitOfMeasureCommand uomc = unitOfMeasureToUnitOfMeasureCommand.convert(uom);
 
         //then
         assertEquals(LONG_VALUE, uomc.getId());
