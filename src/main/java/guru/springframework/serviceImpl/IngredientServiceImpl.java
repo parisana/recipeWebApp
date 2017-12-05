@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
+import java.util.Set;
 
 /**
  * Created by Parisana on 5/12/17
@@ -106,12 +107,46 @@ public class IngredientServiceImpl implements IngredientService{
                         .filter(ingredient -> ingredient.getUom().getId().equals(ingredientCommand.getUom().getId()))
                         .findFirst();
             }
-            return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+            if (savedIngredientOptional.isPresent())
+                return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
 
+            return new IngredientCommand();
 
 //            return savedRecipe.getIngredients().stream()
 //                    .filter(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))
 //                    .map(ingredientToIngredientCommand::convert).findFirst().get();
         }
+    }
+
+    @Override
+    public IngredientCommand deleteIngredientById(Long recipeId, Long ingredientId) {
+        Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
+
+        if (!recipeOptional.isPresent()){
+            //todo handle exceptions
+            log.debug("***Recipe not found for the deleting id: "+recipeId+" ***");
+
+            return new IngredientCommand();
+        }
+
+        Recipe recipe= recipeOptional.get();
+
+        Optional<Ingredient> ingredientOptional = recipe.getIngredients().stream()
+                .filter(ingredient -> ingredient.getId().equals(ingredientId))
+                .findFirst();
+
+        if (!ingredientOptional.isPresent()){
+            //todo handle exceptions
+            log.debug("*** Ingredient might not be present ingredient id: "+ ingredientId);
+            return new IngredientCommand();
+        }
+        Ingredient ingredientToDelete= ingredientOptional.get();
+        ingredientToDelete.setRecipe(null);
+
+        recipe.getIngredients().remove(ingredientToDelete);
+        recipeRepository.save(recipe);
+
+        return ingredientToIngredientCommand.convert(ingredientToDelete);
+
     }
 }

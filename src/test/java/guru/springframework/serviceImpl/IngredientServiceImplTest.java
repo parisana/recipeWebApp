@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Optional;
 
@@ -80,7 +79,7 @@ public class IngredientServiceImplTest {
     }
 
     @Test
-    public void saveIngredientCommandTest(){
+    public void saveIngredientCommand(){
         Long ingredientId= 2l;
         Long recipeId=2l;
 
@@ -108,4 +107,37 @@ public class IngredientServiceImplTest {
         verify(recipeRepository, times(1)).save(any());
     }
 
+    @Test
+    public void deleteIngredientCommand() {
+
+        Long recipeId=1l;
+        Long ingredientId1=1l;
+        Long ingredientId2=2l;
+
+        Recipe recipe= new Recipe();
+        recipe.setId(recipeId);
+
+        Ingredient ingredient1= new Ingredient();
+        ingredient1.setId(ingredientId1);
+        Ingredient ingredient2= new Ingredient();
+        ingredient2.setId(ingredientId2);
+
+        recipe.addIngredient(ingredient1);
+        recipe.addIngredient(ingredient2);
+
+        Optional<Recipe> recipeOptional= Optional.of(recipe);
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        //when
+        ingredientService.deleteIngredientById(recipeId, ingredientId1);
+
+        //then
+        assertEquals(1, recipe.getIngredients().size());
+        assert(recipe.getIngredients().contains(ingredient2));
+
+        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).save(any());
+
+    }
 }

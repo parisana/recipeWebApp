@@ -3,7 +3,6 @@ package guru.springframework.controllers;
 import guru.springframework.commands.IngredientCommand;
 import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.UnitOfMeasureToUnitOfMeasureCommand;
-import guru.springframework.domain.Ingredient;
 import guru.springframework.repositories.UnitOfMeasureRepository;
 import guru.springframework.serviceImpl.UnitOfMeasureServiceImpl;
 import guru.springframework.services.IngredientService;
@@ -63,7 +62,7 @@ public class IngredientControllerTest {
     }
 
     @Test
-    public void showIngredientListTest() throws Exception{
+    public void listIngredients() throws Exception{
         //given
         RecipeCommand recipeCommand= new RecipeCommand();
         when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
@@ -76,7 +75,7 @@ public class IngredientControllerTest {
     }
 
     @Test
-    public void showIngredientTest() throws Exception{
+    public void showIngredient() throws Exception{
         //given
         Long recipeId= 21l;
         Long ingredientId= 32l;
@@ -93,7 +92,7 @@ public class IngredientControllerTest {
     }
 
     @Test
-    public void updateRecipeIngredientTest() throws Exception {
+    public void updateRecipeIngredient() throws Exception {
         IngredientCommand ingredientCommand= new IngredientCommand();
 
         when(ingredientService.findByRecipeIdAndIngredientId(anyLong(), anyLong())).thenReturn(ingredientCommand);
@@ -107,7 +106,7 @@ public class IngredientControllerTest {
     }
 
     @Test
-    public void saveOrUpdateTest() throws Exception {
+    public void saveOrUpdate() throws Exception {
         IngredientCommand ingredientCommand= new IngredientCommand();
         ingredientCommand.setId(2l);
         ingredientCommand.setRecipeId(3l);
@@ -132,5 +131,16 @@ public class IngredientControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("ingredient", "uomList"))
                 .andExpect(view().name("recipe/ingredient/ingredient-form"));
+    }
+
+    @Test
+    public void deleteRecipeIngredient() throws Exception {
+
+        when(ingredientService.deleteIngredientById(anyLong(), anyLong())).thenReturn(new IngredientCommand());
+
+        mockMvc.perform(get("/recipe/1/ingredient/2/delete"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/recipe/1/ingredients"));
+
     }
 }
