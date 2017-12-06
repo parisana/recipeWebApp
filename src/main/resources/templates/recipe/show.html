@@ -26,12 +26,24 @@
                             <div class="col-md-3">
                                 <h5>Categories:</h5>
                             </div>
-                            <div class="col-md-9">
+                            <div class="col-md-3">
                                 <ul>
                                     <li th:remove="all">cat one</li>
                                     <li th:remove="all">cat two</li>
                                     <li th:each="category : ${recipe.categories}" th:text="${category.getDescription()}">cat three</li>
                                 </ul>
+                            </div>
+                            <div class="col-md-6">
+                                <div class="col-md-12" style="display: block; float: top">
+                                    <img src="../../static/images/guacamole400x400WithX.jpg"
+                                        th:src="@{'/recipe/'+${recipe.id}+'/recipeImage'}"
+                                         height="200" width="220"
+                                        style="float: right; margin-right: 10%"/>
+                                </div>
+                                <div class="col-md-12" style="display: block; float: bottom">
+                                    <a href="#" th:href="@{'/recipe/'+ ${recipe.id} + '/uploadImage'}" role="button" style="float: right; margin-right: 10%">
+                                        Change</a>
+                                </div>
                             </div>
                         </div>
                         <div class="row">
