@@ -1,0 +1,10 @@
+spring:
+  datasource:
+    url:  jdbc:mysql://localhost:3306/sfg_prod
+    username: sfg_prd_user
+    password: P@ssw0rd
+  jpa:
+    hibernate: validate
+    database-platform: org.hibernate.dialect.MySQL.5InnoDBDialect
+    database: mysql
+    show-sql: false
