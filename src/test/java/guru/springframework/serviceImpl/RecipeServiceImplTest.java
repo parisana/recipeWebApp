@@ -4,12 +4,15 @@ import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.services.RecipeService;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
+import org.springframework.test.web.servlet.MockMvc;
+import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
@@ -25,7 +28,7 @@ import static org.mockito.Mockito.*;
  */
 public class RecipeServiceImplTest {
 
-    private RecipeService recipeService;
+    private RecipeServiceImpl recipeService;
 
     @Mock
     private RecipeToRecipeCommand recipeToRecipeCommand;
@@ -44,7 +47,7 @@ public class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipeByIdTest() throws Exception{
+    public void findById() throws Exception{
         Recipe recipe= new Recipe();
         recipe.setId(1l);
 
@@ -60,7 +63,7 @@ public class RecipeServiceImplTest {
     }
 
     @Test
-    public void getRecipesTest() {
+    public void getRecipes() {
 
         Recipe recipe= new Recipe();
         HashSet recipesData = new HashSet();
@@ -110,5 +113,16 @@ public class RecipeServiceImplTest {
 
         //then
         verify(recipeRepository, times(1)).deleteById(idToDelete);
+    }
+
+    @Test(expected = NotFoundException.class)
+    public void findByIdNotFound(){
+
+        Optional<Recipe> recipeOptional= Optional.empty();
+
+        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+
+        //then
+        Recipe recipe= recipeService.findById(anyLong());
     }
 }

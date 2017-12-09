@@ -4,6 +4,7 @@ import guru.springframework.commands.RecipeCommand;
 import guru.springframework.converters.RecipeCommandToRecipe;
 import guru.springframework.converters.RecipeToRecipeCommand;
 import guru.springframework.domain.Recipe;
+import guru.springframework.exceptions.NotFoundException;
 import guru.springframework.repositories.RecipeRepository;
 import guru.springframework.services.RecipeService;
 import lombok.extern.slf4j.Slf4j;
@@ -33,7 +34,7 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public Set<Recipe> getRecipes() {
-        log.debug("***Inside RecipeServiceImpl***");
+        log.debug("***Getting all Recipes***");
 
         Set<Recipe> recipeSet= new HashSet<>();
         recipeRepository.findAll().iterator().forEachRemaining(recipeSet::add);
@@ -42,12 +43,12 @@ public class RecipeServiceImpl implements RecipeService{
 
     @Override
     public Recipe findById(Long id){
-        log.debug("***Inside findById***");
+        log.debug("***Getting Recipe with Id: "+id.toString()+" ***");
 
         Optional<Recipe> recipeOptional= recipeRepository.findById(id);
 
         if (!recipeOptional.isPresent()){
-            throw new RuntimeException("Recipe Not Found!");
+            throw new NotFoundException("Recipe Not Found!");
         }
 
         return recipeOptional.get();
@@ -57,7 +58,7 @@ public class RecipeServiceImpl implements RecipeService{
     @Override
     @Transactional
     public RecipeCommand saveRecipeCommand(RecipeCommand command) {
-        log.debug("***Inside saveRecipeCommand***");
+        log.debug("***Saving Recipe command with Id: "+(command!=null?command.getId():null)+" ***");
         Recipe detatchedRecipe= recipeCommandToRecipe.convert(command);
 
         Recipe savedRecipe = recipeRepository.save(detatchedRecipe);
@@ -69,13 +70,13 @@ public class RecipeServiceImpl implements RecipeService{
     @Transactional
     @Override
     public RecipeCommand findCommandById(Long id) {
-        log.debug("***Inside findCommandById***");
+        log.debug("***Finding Command with Id: "+id.toString()+" ***");
         return recipeToRecipeCommand.convert(findById(id));
     }
 
     @Override
     public void deleteById(Long id) {
-        log.debug("***Inside delete by id***");
+        log.debug("***Deleting Recipe with Id: "+id.toString()+" ***");
         recipeRepository.deleteById(id);
     }
 }
