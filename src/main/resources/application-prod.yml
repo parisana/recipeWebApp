@@ -1,6 +1,6 @@
 spring:
   datasource:
-    url:  jdbc:mysql://localhost:3306/sfg_prod
+    url: jdbc:mysql://localhost:3306/sfg_prod
     username: sfg_prd_user
     password: P@ssw0rd
   jpa:
