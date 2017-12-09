@@ -33,6 +33,7 @@ dependencies {
 	compile('org.springframework.boot:spring-boot-starter-data-jpa')
 	compile('org.springframework.boot:spring-boot-starter-thymeleaf')
 	compile('org.springframework.boot:spring-boot-starter-web')
+	compile('junit:junit')
 	compile('org.projectlombok:lombok')
 	compile('mysql:mysql-connector-java')
 	compile('org.webjars:jquery:3.2.1')
@@ -47,4 +48,8 @@ jacocoTestReport {
 		xml.enabled true
 		html.enabled false
 	}
+}
+//generate gradle wrapper & run $ gradle wrapper to generate
+task wrapper(type: Wrapper) {
+	gradleVersion = '4.3.1' //version required
 }

@@ -1,6 +1,0 @@
-test:
-    post:
-#        Call gradle jacocoTestReport to generate report
-        - if [ -e ./gradlew ]; then ./gradlew jacocoTestReport;else gradle jacocoTestReport;fi
-#        Call bash <(curl -s https://codecov.io/bash) to upload reports to Codecov
-        - bash <(curl -s https://codecov.io/bash)
