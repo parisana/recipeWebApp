@@ -58,9 +58,5 @@ jobs:
       - run:
           name: Send to CodeCov
           command: bash <(curl -s https://codecov.io/bash)
-      # run tests!
-      - run: gradle test
-
-
-
->>>>>>> Stashed changes
+#       #run tests!
+#      - run: gradle test
