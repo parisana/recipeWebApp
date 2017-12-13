@@ -36,7 +36,7 @@ public class ImageController {
     @GetMapping("/recipe/{recipeId}/uploadImage")
     public String showUploadForm(@PathVariable String recipeId, Model model){
         log.debug("***Showing upload Form for recipe***"+recipeId);
-        model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(recipeId)));
+        model.addAttribute("recipe", recipeService.findCommandById(recipeId));
 
         return "recipe/imageUploadForm";
     }
@@ -44,14 +44,14 @@ public class ImageController {
     @PostMapping("recipe/{recipeId}/image")
     public String uploadImage(@PathVariable String recipeId, @RequestParam("imagefile")MultipartFile file){
         log.debug("***Uploading file: "+file+" recipeId: "+recipeId );
-        imageService.saveImageFile(Long.valueOf(recipeId), file);
+        imageService.saveImageFile(recipeId, file);
 
         return "redirect:/recipe/"+ recipeId +"/show";
     }
 
     @GetMapping("/recipe/{recipeId}/recipeImage")
     public void renderRecipeImage(@PathVariable String recipeId, HttpServletResponse response){
-        RecipeCommand recipeCommand = recipeService.findCommandById(Long.valueOf(recipeId));
+        RecipeCommand recipeCommand = recipeService.findCommandById(recipeId);
         response.setContentType("image/jpeg");
         if (recipeCommand.getImage()!=null){
             byte[] imageByte= new byte[recipeCommand.getImage().length];

@@ -33,7 +33,7 @@ public class RecipeController {
     public String showById(@PathVariable String id, Model model){
         log.debug("***getting show page***");
 
-        model.addAttribute("recipe", recipeService.findById(new Long(id)));
+        model.addAttribute("recipe", recipeService.findById(id));
 
         return "recipe/show";
 
@@ -64,14 +64,14 @@ public class RecipeController {
     @GetMapping("recipe/{id}/update")
     public String updateRecipe(@PathVariable String id, Model model){
         log.debug("***getting update/edit page***");
-        model.addAttribute("recipe", recipeService.findCommandById(Long.valueOf(id)));
+        model.addAttribute("recipe", recipeService.findCommandById(id));
         return "recipe/recipe-form";
     }
 
     @GetMapping("recipe/{id}/delete")
     public String deleteById(@PathVariable String id, Model model){
         log.debug("***Deleting id: "+id +" ***");
-        recipeService.deleteById(Long.valueOf(id));
+        recipeService.deleteById(id);
 
         return "redirect:/";
     }
@@ -82,8 +82,8 @@ public class RecipeController {
         log.debug("***Getting error page! Error Message: "+e.getMessage()+" ***");
 
         ModelAndView modelAndView = new ModelAndView();
-        modelAndView.setViewName("error/404error");
-        modelAndView.addObject("exceptions", e);
+        modelAndView.setViewName("404error");
+        modelAndView.addObject("exception", e);
 
         return modelAndView;
     }

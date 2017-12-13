@@ -23,8 +23,8 @@ public class ExceptionHandlerController {
 
         ModelAndView modelAndView= new ModelAndView();
 
-        modelAndView.addObject("exceptions", e);
-        modelAndView.setViewName("error/400error");
+        modelAndView.addObject("exception", e);
+        modelAndView.setViewName("400error");
 
         return modelAndView;
 

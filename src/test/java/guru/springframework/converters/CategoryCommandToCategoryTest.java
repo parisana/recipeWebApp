@@ -35,7 +35,7 @@ public class CategoryCommandToCategoryTest {
     public void convert() {
 
         CategoryCommand categoryCommand = new CategoryCommand();
-        categoryCommand.setId(1l);
+        categoryCommand.setId("1");
         categoryCommand.setDescription("Test Description");
 
         Category category = categoryCommandToCategory.convert(categoryCommand);

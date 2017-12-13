@@ -38,7 +38,6 @@ jobs:
             - ~/.gradle
           key: v1-dependencies-{{ checksum "build.gradle" }}
 
-<<<<<<< Updated upstream
       #run tests and gen code coverage
       - run: ./gradlew clean test jacocoTestReport
 
@@ -59,10 +58,3 @@ jobs:
       - run:
           name: Send to CodeCov
           command: bash <(curl -s https://codecov.io/bash)
-=======
-      # run tests!
-      - run: gradle test
-
-
-
->>>>>>> Stashed changes

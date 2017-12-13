@@ -16,6 +16,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -41,22 +42,22 @@ public class ImageServiceImplTest {
     public void saveImageFile() throws IOException {
 
         Recipe recipe= new Recipe();
-        recipe.setId(1l);
+        recipe.setId("1");
 
         MockMultipartFile multipartFile= new MockMultipartFile("imageFile", "testing.txt", "text/plain",
                 "Spring FrameWork Guru".getBytes());
 
         Optional<Recipe> recipeOptional= Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         ArgumentCaptor<Recipe> argumentCaptor= ArgumentCaptor.forClass(Recipe.class);
 
         //when
-        imageService.saveImageFile(1l, multipartFile);
+        imageService.saveImageFile("1", multipartFile);
 
         //then
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).findById(anyString());
         verify(recipeRepository, times(1)).save(argumentCaptor.capture());
 
         Recipe savedRecipe= argumentCaptor.getValue();

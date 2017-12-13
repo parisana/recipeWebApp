@@ -16,7 +16,7 @@ import static org.junit.Assert.*;
  */
 public class RecipeCommandToRecipeTest {
 
-    public static Long ID=323l;
+    public static String ID="323";
     public static String DESC="test desc";
     public static Integer PREP_TIME=438;
     public static Integer COOK_TIME= 3232;
@@ -25,11 +25,11 @@ public class RecipeCommandToRecipeTest {
     public static String URL="http://someurl.com";
     public static String DIRECTIONS= "Test Direction";
     public static Difficulty DIFFICULTY= Difficulty.HARD;
-    public static Long CAT_ID1= 3l;
-    public static Long CAT_ID2=4l;
-    public static Long ING_ID1=3l;
-    public static Long ING_ID2=4l;
-    public static Long NOTE_ID= 3232l;
+    public static String CAT_ID1= "3";
+    public static String CAT_ID2="4";
+    public static String ING_ID1="3";
+    public static String ING_ID2="4";
+    public static String NOTE_ID= "3232";
 
     RecipeCommandToRecipe recipeCommandToRecipe;
 

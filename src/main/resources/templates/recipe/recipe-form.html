@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8"/>
-    <title>Recipe Form</title>
+    <title>Edit Ingredient</title>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css"
           integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous"
           th:href="@{/webjars/bootstrap/3.3.7-1/css/bootstrap.min.css}">
@@ -12,6 +12,7 @@
             th:src="@{/webjars/bootstrap/3.3.7-1/js/bootstrap.min.js}"></script>
 </head>
 <body>
+<!--/*@thymesVar id="recipe" type="guru.springframework.domain.Recipe"*/-->
 <div class="container-fluid" style="margin-top: 20px">
     <div class="row">
         <div class="col-md-6 col-md-offset-3">
@@ -20,7 +21,6 @@
                 <div th:if="${#fields.hasErrors('*')}" class="alert alert-danger">
                     <p>Please Correct Errors Below</p>
                 </div>
-
                 <input type="hidden" th:field="*{id}"/>
                 <div class="pannel-group">
                     <div class="panel panel-primary">
@@ -31,7 +31,7 @@
                             <div class="row">
                                 <div class="col-md-3 form-group" th:class="${#fields.hasErrors('description')}
                                 ? 'col-md-3 form-group has-error' : 'col-md-3 form-group'">
-                                    <label>Recipe Description:</label>
+                                    <label th:text="#{recipe.description}">Recipe Description d:</label>
                                     <input type="text" class="form-control" th:field="*{description}" th:errorclass="has-error"/>
                                     <span class="help-block" th:if="${#fields.hasErrors('description')}">
                                         <ul>
@@ -149,6 +149,15 @@
                                         ' - ' + ingredient.getDescription())}">1 Teaspoon of Sugar
                                         </li>
                                     </ul>
+                                    <div th:each="ingredientEach, idx : ${recipe.ingredients}">
+                                        <input type="hidden" th:field="*{ingredients[__${idx.index}__].id}"/>
+                                        <input type="hidden" th:field="*{ingredients[__${idx.index}__].description}"/>
+                                        <input type="hidden" th:field="*{ingredients[__${idx.index}__].amount}"/>
+                                        <input type="hidden" th:field="*{ingredients[__${idx.index}__].uom.id}"/>
+                                    </div>
+                                    <div th:each="catEach, idx : ${recipe.categories}">
+                                        <input type="hidden" th:field="*{categories[__${idx.index}__].id}"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>

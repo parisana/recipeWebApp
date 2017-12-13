@@ -49,16 +49,16 @@ public class RecipeServiceImplTest {
     @Test
     public void findById() throws Exception{
         Recipe recipe= new Recipe();
-        recipe.setId(1l);
+        recipe.setId("1");
 
         Optional<Recipe> recipeOptional= Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         //Recipe recipeReturned= recipeService.findById(1l);
-        assertNotNull("Null recipe returned", recipeService.findById(1l));
+        assertNotNull("Null recipe returned", recipeService.findById("1"));
 
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).findById(anyString());
         verify(recipeRepository, never()).findAll();
     }
 
@@ -76,7 +76,7 @@ public class RecipeServiceImplTest {
         assertEquals(recipes.size(), 1);
         //since recipeService calls recipeRepository.findAll(), we can verify recipeRepository.findAll() was called
         verify(recipeRepository, times(1)).findAll(); //verify that findAll() was called only once.
-        verify(recipeRepository, never()).findById(anyLong());
+        verify(recipeRepository, never()).findById(anyString());
 
     }
 
@@ -84,27 +84,27 @@ public class RecipeServiceImplTest {
     @Test
     public void getRecipeCommandByIdTest(){
         Recipe recipe= new Recipe();
-        recipe.setId(1223l);
+        recipe.setId("12223");
         Optional<Recipe> optionalRecipe= Optional.of(recipe);
 
         RecipeCommand recipeCommand= new RecipeCommand();
-        recipeCommand.setId(1223l);
+        recipeCommand.setId("1223");
 
-        when(recipeRepository.findById(anyLong())).thenReturn(optionalRecipe);
-        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+        when(recipeRepository.findById(anyString())).thenReturn(optionalRecipe);
+        when(recipeService.findCommandById(anyString())).thenReturn(recipeCommand);
 
-        assertNotNull("Null recipe returned", recipeService.findCommandById(anyLong()));
-        verify(recipeRepository, times(2)).findById(anyLong());
-        assertEquals(recipe.getId(), recipeService.findCommandById(anyLong()).getId());
+        assertNotNull("Null recipe returned", recipeService.findCommandById(anyString()));
+        verify(recipeRepository, times(2)).findById(anyString());
+        assertEquals(recipe.getId(), recipeService.findCommandById(anyString()).getId());
 
-        verify(recipeRepository, times(3)).findById(anyLong());
+        verify(recipeRepository, times(3)).findById(anyString());
         verify(recipeRepository, never()).findAll();
     }
 
     @Test
     public void testDeleteById() throws Exception{
         //given
-        Long idToDelete= Long.valueOf(32l);
+        String idToDelete= "32";
 
         //when
         recipeService.deleteById(idToDelete);
@@ -120,9 +120,9 @@ public class RecipeServiceImplTest {
 
         Optional<Recipe> recipeOptional= Optional.empty();
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         //then
-        Recipe recipe= recipeService.findById(anyLong());
+        Recipe recipe= recipeService.findById(anyString());
     }
 }

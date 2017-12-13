@@ -14,7 +14,8 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 
 import static org.junit.Assert.assertEquals;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -49,14 +50,14 @@ public class ImageControllerTest {
     @Test
     public void showUploadForm() throws Exception {
 
-        when(recipeService.findCommandById(anyLong())).thenReturn(new RecipeCommand());
+        when(recipeService.findCommandById(anyString())).thenReturn(new RecipeCommand());
 
         mockMvc.perform(get("/recipe/1/uploadImage"))
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("recipe"))
                 .andExpect(view().name("recipe/imageUploadForm"));
 
-        verify(recipeService, times(1)).findCommandById(anyLong());
+        verify(recipeService, times(1)).findCommandById(anyString());
 
     }
 
@@ -70,7 +71,7 @@ public class ImageControllerTest {
                 .andExpect(status().is3xxRedirection())
                 .andExpect(header().string("Location", "/recipe/1/show"));
 
-        verify(imageService, times(1)).saveImageFile(anyLong(), any());
+        verify(imageService, times(1)).saveImageFile(anyString(), any());
 
     }
 
@@ -83,10 +84,10 @@ public class ImageControllerTest {
             bytes[i++]= b;
 
         RecipeCommand recipeCommand= new RecipeCommand();
-        recipeCommand.setId(1l);
+        recipeCommand.setId("1");
         recipeCommand.setImage(bytes);
 
-        when(recipeService.findCommandById(anyLong())).thenReturn(recipeCommand);
+        when(recipeService.findCommandById(anyString())).thenReturn(recipeCommand);
 
         MockHttpServletResponse response = mockMvc.perform(get("/recipe/1/recipeImage"))
                 .andExpect(status().isOk())

@@ -19,7 +19,7 @@ public class CategoryTest {
 
     @Test
     public void getId() {
-        Long id= 4l;
+        String id= "4";
 
         category.setId(id);
 

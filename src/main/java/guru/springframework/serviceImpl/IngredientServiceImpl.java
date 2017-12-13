@@ -36,7 +36,7 @@ public class IngredientServiceImpl implements IngredientService{
     }
 
     @Override
-    public IngredientCommand findByRecipeIdAndIngredientId(Long recipeId, Long ingredientId) {
+    public IngredientCommand findByRecipeIdAndIngredientId(String recipeId, String ingredientId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
 
         if (!recipeOptional.isPresent()){
@@ -107,10 +107,10 @@ public class IngredientServiceImpl implements IngredientService{
                         .filter(ingredient -> ingredient.getUom().getId().equals(ingredientCommand.getUom().getId()))
                         .findFirst();
             }
-            if (savedIngredientOptional.isPresent())
-                return ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+            IngredientCommand ingredientCommandSaved = ingredientToIngredientCommand.convert(savedIngredientOptional.get());
+            ingredientCommandSaved.setRecipeId(recipe.getId());
 
-            return new IngredientCommand();
+            return ingredientCommandSaved;
 
 //            return savedRecipe.getIngredients().stream()
 //                    .filter(ingredient -> ingredient.getId().equals(ingredientCommand.getId()))
@@ -119,7 +119,7 @@ public class IngredientServiceImpl implements IngredientService{
     }
 
     @Override
-    public IngredientCommand deleteIngredientById(Long recipeId, Long ingredientId) {
+    public IngredientCommand deleteIngredientById(String recipeId, String ingredientId) {
         Optional<Recipe> recipeOptional = recipeRepository.findById(recipeId);
 
         if (!recipeOptional.isPresent()){

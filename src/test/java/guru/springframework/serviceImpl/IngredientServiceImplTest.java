@@ -19,6 +19,7 @@ import java.util.Optional;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -54,22 +55,22 @@ public class IngredientServiceImplTest {
     public void findByRecipeIdAndIngredientId() {
 
         Recipe recipe= new Recipe();
-        recipe.setId(1l);
+        recipe.setId("1");
 
         Ingredient ingredient1= new Ingredient();
-        ingredient1.setId(1l);
+        ingredient1.setId("1");
 
         Ingredient ingredient2 = new Ingredient();
-        ingredient2.setId(2l);
+        ingredient2.setId("2");
 
         recipe.addIngredient(ingredient1);
         recipe.addIngredient(ingredient2);
 
         Optional<Recipe> recipeOptional= Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
-        IngredientCommand ingredientCommand= ingredientService.findByRecipeIdAndIngredientId(1l, 2l);
+        IngredientCommand ingredientCommand= ingredientService.findByRecipeIdAndIngredientId("1", "2");
 
         //then
         assertEquals(Long.valueOf(1l), ingredientCommand.getRecipeId());
@@ -80,8 +81,8 @@ public class IngredientServiceImplTest {
 
     @Test
     public void saveIngredientCommand(){
-        Long ingredientId= 2l;
-        Long recipeId=2l;
+        String ingredientId= "2";
+        String recipeId="2";
 
         //given
         IngredientCommand ingredientCommand= new IngredientCommand();
@@ -95,7 +96,7 @@ public class IngredientServiceImplTest {
         recipe.addIngredient(new Ingredient());
         recipe.getIngredients().iterator().next().setId(ingredientId);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
         when(recipeRepository.save(any())).thenReturn(recipe);
 
         //when
@@ -103,16 +104,16 @@ public class IngredientServiceImplTest {
 
         //then
         assertEquals(recipeId, savedIngredientCommand.getId());
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).findById(anyString());
         verify(recipeRepository, times(1)).save(any());
     }
 
     @Test
     public void deleteIngredientCommand() {
 
-        Long recipeId=1l;
-        Long ingredientId1=1l;
-        Long ingredientId2=2l;
+        String recipeId="1";
+        String ingredientId1="1";
+        String ingredientId2="1";
 
         Recipe recipe= new Recipe();
         recipe.setId(recipeId);
@@ -127,7 +128,7 @@ public class IngredientServiceImplTest {
 
         Optional<Recipe> recipeOptional= Optional.of(recipe);
 
-        when(recipeRepository.findById(anyLong())).thenReturn(recipeOptional);
+        when(recipeRepository.findById(anyString())).thenReturn(recipeOptional);
 
         //when
         ingredientService.deleteIngredientById(recipeId, ingredientId1);
@@ -136,7 +137,7 @@ public class IngredientServiceImplTest {
         assertEquals(1, recipe.getIngredients().size());
         assert(recipe.getIngredients().contains(ingredient2));
 
-        verify(recipeRepository, times(1)).findById(anyLong());
+        verify(recipeRepository, times(1)).findById(anyString());
         verify(recipeRepository, times(1)).save(any());
 
     }

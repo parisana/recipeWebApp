@@ -17,8 +17,8 @@ public class IngredientCommandToIngredientTest {
 
     public static final BigDecimal AMOUNT = new BigDecimal("32.33");
     public static final String DESCRIPTION = "Test Desc";
-    public static final Long ID_VALUE = new Long(132L);
-    public static final Long UOM_ID = new Long(222L);
+    public static final String ID_VALUE = "132";
+    public static final String UOM_ID = "222";
 
     IngredientCommandToIngredient ingredientCommandToIngredient;
 

@@ -37,8 +37,8 @@ public class UnitOfMeasureServiceImplTest {
 
     @Test
     public void listAllUoms() {
-        Long id1= 1l;
-        Long id2= 2l;
+        String id1= "1";
+        String id2= "2";
 
         UnitOfMeasure unitofMeasure = new UnitOfMeasure();
         unitofMeasure.setId(id1);
